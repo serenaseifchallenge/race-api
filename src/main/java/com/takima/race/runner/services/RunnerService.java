@@ -1,5 +1,7 @@
 package com.takima.race.runner.services;
 
+import com.takima.race.registration.entities.Registration;
+import com.takima.race.registration.repositories.RegistrationRepository;
 import com.takima.race.runner.entities.Runner;
 import com.takima.race.runner.repositories.RunnerRepository;
 import org.springframework.http.HttpStatus;
@@ -12,9 +14,11 @@ import java.util.List;
 public class RunnerService {
 
     private final RunnerRepository runnerRepository;
+    private final RegistrationRepository registrationRepository;
 
-    public RunnerService(RunnerRepository runnerRepository) {
+    public RunnerService(RunnerRepository runnerRepository, RegistrationRepository registrationRepository) {
         this.runnerRepository = runnerRepository;
+        this.registrationRepository = registrationRepository;
     }
 
     public List<Runner> getAll() {
@@ -29,4 +33,23 @@ public class RunnerService {
                 )
         );
     }
+
+    public Runner create(Runner runner){
+        if (!runner.getEmail().contains("@")) { // si le mail ne contient pas @ on affiche une erreur 409 avec un message
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, 
+                "Email must contain '@'"
+            );
+        }
+        return runnerRepository.save(runner);
+    }
+
+    public void delete(Long id){
+        runnerRepository.deleteById(id);
+    }
+
+    public List<Registration> listCourse(long runnerId){
+        return registrationRepository.findByRunnerId(runnerId);
+    }
+
 }
