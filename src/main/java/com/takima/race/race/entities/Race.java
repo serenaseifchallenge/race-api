@@ -1,6 +1,6 @@
 package com.takima.race.race.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -14,11 +14,11 @@ public class Race {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
     private String name;
-    private Date date;
+    private LocalDate date;
     private String location;
     private int maxParticipants;
 
-    public Race(Long id, String name, Date date, String location, int maxParticipants) {
+    public Race(Long id, String name, LocalDate date, String location, int maxParticipants) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -57,11 +57,11 @@ public class Race {
         this.name = name;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

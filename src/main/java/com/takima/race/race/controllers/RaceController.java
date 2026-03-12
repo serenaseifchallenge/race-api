@@ -3,10 +3,12 @@ package com.takima.race.race.controllers;
 import com.takima.race.race.entities.Race;
 import com.takima.race.race.services.RaceService;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +54,15 @@ public class RaceController {
         raceService.getById(raceId); // verifier si elle existe
         long count = raceService.countByRaceId(raceId); // compter nombre de participant par course
         return Collections.singletonMap("count", count); // afficher sous format [count : " "]
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Race update(@PathVariable Long id, @RequestBody Race race) {
+        // Vérifier si une course avec l'id existe
+        raceService.getById(id);
+        race.setId(id); // s'il existe on va set l'Id de la course à modifier et sinon une erreur 404 s'affichera
+        return raceService.create(race);
     }
 
 }
